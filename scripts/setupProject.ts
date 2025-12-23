@@ -1,8 +1,10 @@
 import { ApifyClient } from 'apify-client';
-import { refactorProject } from './refactorProject.ts';
-import { generateActorResources } from './actorSchemaConverter.ts';
-import { setConfig } from './actorConfig.ts';
+import { refactorProject } from './refactorProject';
+import { generateActorResources } from './actorSchemaConverter';
+import { setConfig } from './actorConfig';
 import * as readline from 'readline';
+import fs from 'fs';
+import path from 'path';
 
 // Targets (old names)
 const TARGET_CLASS_NAME = 'ApifyActorTemplate';
@@ -56,7 +58,18 @@ export async function setupProject() {
         throw new Error(`❌ Actor with id ${actorId} not found.`);
     }
 
-    // Step 1: Fetch actor info & replace placeholders
+    // Pre-check: Ensure target folder doesn't exist before we start
+    const targetClassName = actor.name
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join('');
+    const newActorDir = path.join('nodes', `Apify${targetClassName}`);
+
+    if (fs.existsSync(newActorDir)) {
+        throw new Error(`❌ Folder ${newActorDir} already exists. Please remove it before running the script again.`);
+    }
+
+    // Step 1: Fetch Actor info & replace placeholders
     const values = await setConfig(actor, NODE_FILE_PATH, X_PLATFORM_HEADER_ID);
 
     // Step 2: Generate n8n resources based on Actor input schema
@@ -69,12 +82,13 @@ export async function setupProject() {
         TARGET_CLASS_NAME,
     );
 
-    // Step 3: Rename files/folders and necessary code snippets
+    // Step 3: Rename files/folders and handle icons
     refactorProject(
         TARGET_CLASS_NAME,
         values.CLASS_NAME,
         TARGET_PACKAGE_NAME,
         values.PACKAGE_NAME,
+        values.ICON_FORMAT,
     );
 
     console.log('🎉 Project setup complete!');
