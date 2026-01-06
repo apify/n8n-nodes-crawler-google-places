@@ -25,7 +25,7 @@ const resourceSelect: INodeProperties[] = [
 		options: [
 			resourceOption,
 		],
-		default: RESOURCE_NAME,
+		default: '',
 	},
 ];
 
