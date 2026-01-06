@@ -45,14 +45,13 @@ export const operationSelect: INodeProperties = {
 	displayName: 'Operation',
 	name: 'operation',
 	type: 'options',
-	default: '',
+	default: OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME,
 	noDataExpression: true,
 	displayOptions: {
 		show: {
 			resource: [RESOURCE_NAME],
 		},
 	},
-	default: operations.length > 0 ? operations[0].value : '',
 	options: operations,
 };
 
