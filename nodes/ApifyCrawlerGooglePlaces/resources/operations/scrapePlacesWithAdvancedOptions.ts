@@ -7,37 +7,15 @@ import {
 	getLocationQueryProperty,
 	getMaxCrawledPlacesPerSearchProperty,
 	getLanguageProperty,
-	getCategoryFilterWordsProperty,
-	getSearchMatchingProperty,
-	getPlaceMinimumStarsProperty,
-	getWebsiteProperty,
-	getSkipClosedPlacesProperty,
-	getScrapePlaceDetailPageProperty,
-	getScrapeTableReservationProviderProperty,
-	getIncludeWebResultsProperty,
-	getScrapeDirectoriesProperty,
-	getMaxQuestionsProperty,
-	getScrapeContactsProperty,
-	getScrapeSocialMediaProfilesProperty,
-	getMaximumLeadsEnrichmentRecordsProperty,
-	getLeadsEnrichmentDepartmentsProperty,
-	getMaxReviewsProperty,
-	getReviewsStartDateProperty,
-	getReviewsSortProperty,
-	getReviewsFilterStringProperty,
-	getReviewsOriginProperty,
-	getScrapeReviewsPersonalDataProperty,
-	getMaxImagesProperty,
-	getScrapeImageAuthorsProperty,
-	getCountryCodeProperty,
-	getCityProperty,
-	getStateProperty,
-	getCountyProperty,
-	getPostalCodeProperty,
-	getCustomGeolocationProperty,
-	getStartUrlsProperty,
-	getPlaceIdsProperty,
-	getAllPlacesNoSearchActionProperty,
+	getSearchFiltersAndCategoriesSectionProperty,
+	getAdditionalPlaceDetailsScrapingSectionProperty,
+	getCompanyContactsEnrichmentSectionProperty,
+	getReviewsSectionProperty,
+	getBusinessLeadsEnrichmentSectionProperty,
+	getImagesSectionProperty,
+	getAdvancedGeolocationSectionProperty,
+	getAlternativeSourcesSectionProperty,
+	getScrapingPlacesWithoutSearchTermsSectionProperty,
 } from '../../helpers/propertyFunctions';
 
 export const OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME = 'Scrape places with advanced options';
@@ -56,37 +34,15 @@ export function getProperties(resourceName: string): INodeProperties[] {
 		getLocationQueryProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
 		getMaxCrawledPlacesPerSearchProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
 		getLanguageProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getCategoryFilterWordsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getSearchMatchingProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getPlaceMinimumStarsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getWebsiteProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getSkipClosedPlacesProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapePlaceDetailPageProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapeTableReservationProviderProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getIncludeWebResultsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapeDirectoriesProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getMaxQuestionsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapeContactsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapeSocialMediaProfilesProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getMaximumLeadsEnrichmentRecordsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getLeadsEnrichmentDepartmentsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getMaxReviewsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getReviewsStartDateProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getReviewsSortProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getReviewsFilterStringProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getReviewsOriginProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapeReviewsPersonalDataProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getMaxImagesProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getScrapeImageAuthorsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getCountryCodeProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getCityProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getStateProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getCountyProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getPostalCodeProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getCustomGeolocationProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getStartUrlsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getPlaceIdsProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
-		getAllPlacesNoSearchActionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getSearchFiltersAndCategoriesSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getAdditionalPlaceDetailsScrapingSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getCompanyContactsEnrichmentSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getBusinessLeadsEnrichmentSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getReviewsSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getImagesSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getAdvancedGeolocationSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getAlternativeSourcesSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getScrapingPlacesWithoutSearchTermsSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
 	];
 }
 
@@ -102,61 +58,88 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 
 	actorInput.maxCrawledPlacesPerSearch = inputFunctions.getMaxCrawledPlacesPerSearch.call(this, i);
 	actorInput.language = inputFunctions.getLanguage.call(this, i);
-	actorInput.categoryFilterWords = inputFunctions.getCategoryFilterWords.call(this, i);
-	actorInput.searchMatching = inputFunctions.getSearchMatching.call(this, i);
-	actorInput.placeMinimumStars = inputFunctions.getPlaceMinimumStars.call(this, i);
-	actorInput.website = inputFunctions.getWebsite.call(this, i);
-	actorInput.skipClosedPlaces = inputFunctions.getSkipClosedPlaces.call(this, i);
-	actorInput.scrapePlaceDetailPage = inputFunctions.getScrapePlaceDetailPage.call(this, i);
-	actorInput.scrapeTableReservationProvider = inputFunctions.getScrapeTableReservationProvider.call(this, i);
-	actorInput.includeWebResults = inputFunctions.getIncludeWebResults.call(this, i);
-	actorInput.scrapeDirectories = inputFunctions.getScrapeDirectories.call(this, i);
-	actorInput.maxQuestions = inputFunctions.getMaxQuestions.call(this, i);
-	actorInput.scrapeContacts = inputFunctions.getScrapeContacts.call(this, i);
+	
+	const searchFiltersAndCategories = inputFunctions.getSearchFiltersAndCategoriesSection.call(this, i);
+	if (searchFiltersAndCategories) {
+		actorInput.categoryFilterWords = searchFiltersAndCategories.categoryFilterWords;
+		actorInput.searchMatching = searchFiltersAndCategories.searchMatching;
+		actorInput.placeMinimumStars = searchFiltersAndCategories.placeMinimumStars;
+		actorInput.website = searchFiltersAndCategories.website;
+		actorInput.skipClosedPlaces = searchFiltersAndCategories.skipClosedPlaces;
+	}
 
-	const scrapeSocialMediaProfiles = inputFunctions.getScrapeSocialMediaProfiles.call(this, i);
-	if (scrapeSocialMediaProfiles) actorInput.scrapeSocialMediaProfiles = scrapeSocialMediaProfiles;
+	const additionalPlaceDetailsScraping = inputFunctions.getAdditionalPlaceDetailsScrapingSection.call(this, i);
+	if (additionalPlaceDetailsScraping) {
+		actorInput.scrapePlaceDetailPage = additionalPlaceDetailsScraping.scrapePlaceDetailPage;
+		actorInput.scrapeTableReservationProvider = additionalPlaceDetailsScraping.scrapeTableReservationProvider;
+		actorInput.includeWebResults = additionalPlaceDetailsScraping.includeWebResults;
+		actorInput.scrapeDirectories = additionalPlaceDetailsScraping.scrapeDirectories;
+		actorInput.maxQuestions = additionalPlaceDetailsScraping.maxQuestions;
+	}
 
-	actorInput.maximumLeadsEnrichmentRecords = inputFunctions.getMaximumLeadsEnrichmentRecords.call(this, i);
-	actorInput.leadsEnrichmentDepartments = inputFunctions.getLeadsEnrichmentDepartments.call(this, i);
-	actorInput.maxReviews = inputFunctions.getMaxReviews.call(this, i);
+	const companyContactsEnrichment = inputFunctions.getCompanyContactsEnrichmentSection.call(this, i);
+	if (companyContactsEnrichment) {
+		actorInput.scrapeContacts = companyContactsEnrichment.scrapeContacts;
+		actorInput.scrapeSocialMediaProfiles = companyContactsEnrichment.scrapeSocialMediaProfiles;
+	}
 
-	const reviewsStartDate = inputFunctions.getReviewsStartDate.call(this, i);
-	if (reviewsStartDate) actorInput.reviewsStartDate = reviewsStartDate;
+	const businessLeadsEnrichment = inputFunctions.getBusinessLeadsEnrichmentSection.call(this, i);
+	if (businessLeadsEnrichment) {
+		actorInput.maximumLeadsEnrichmentRecords = businessLeadsEnrichment.maximumLeadsEnrichmentRecords;
+		actorInput.leadsEnrichmentDepartments = businessLeadsEnrichment.leadsEnrichmentDepartments;
+	}
 
-	actorInput.reviewsSort = inputFunctions.getReviewsSort.call(this, i);
+	const reviews = inputFunctions.getReviewsSection.call(this, i);
+	if (reviews) {
+		actorInput.maxReviews = reviews.maxReviews;
+		const reviewsStartDate = reviews.reviewsStartDate;
+		if (reviewsStartDate) actorInput.reviewsStartDate = reviewsStartDate;
+		actorInput.reviewsSort = reviews.reviewsSort;
+		actorInput.reviewsFilterString = reviews.reviewsFilterString;
+		actorInput.reviewsOrigin = reviews.reviewsOrigin;
+		actorInput.scrapeReviewsPersonalData = reviews.scrapeReviewsPersonalData;
+	}
 
-	const reviewsFilterString = inputFunctions.getReviewsFilterString.call(this, i);
-	if (reviewsFilterString) actorInput.reviewsFilterString = reviewsFilterString;
+	const images = inputFunctions.getImagesSection.call(this, i);
+	if (images) {
+		actorInput.maxImages = images.maxImages;
+		actorInput.scrapeImageAuthors = images.scrapeImageAuthors;
+	}
+	
+	const advancedGeolocation = inputFunctions.getAdvancedGeolocationSection.call(this, i);
+	if (advancedGeolocation) {
+		actorInput.countryCode = advancedGeolocation.countryCode;
+		if (actorInput.city) {
+			actorInput.city = advancedGeolocation.city;
+		};
+		if (actorInput.state) {
+			actorInput.state = advancedGeolocation.state;
+		};
+		if (actorInput.county) {
+			actorInput.county = advancedGeolocation.county;
+		};
+		if (actorInput.postalCode) {
+			actorInput.postalCode = advancedGeolocation.postalCode;
+		};
+		if (actorInput.customGeolocation) {
+			actorInput.customGeolocation = advancedGeolocation.customGeolocation;
+		};
+	}
 
-	actorInput.reviewsOrigin = inputFunctions.getReviewsOrigin.call(this, i);
-	actorInput.scrapeReviewsPersonalData = inputFunctions.getScrapeReviewsPersonalData.call(this, i);
-	actorInput.maxImages = inputFunctions.getMaxImages.call(this, i);
-	actorInput.scrapeImageAuthors = inputFunctions.getScrapeImageAuthors.call(this, i);
-	actorInput.countryCode = inputFunctions.getCountryCode.call(this, i);
+	const alternativeSources = inputFunctions.getAlternativeSourcesSection.call(this, i);
+	if (alternativeSources) {
+		if (alternativeSources.startUrls) {
+			actorInput.startUrls = alternativeSources.startUrls;
+		}
+		if (alternativeSources.placeIds) {
+			actorInput.placeIds = alternativeSources.placeIds;
+		}
+	}
 
-	const city = inputFunctions.getCity.call(this, i);
-	if (city) actorInput.city = city;
-
-	const state = inputFunctions.getState.call(this, i);
-	if (state) actorInput.state = state;
-
-	const county = inputFunctions.getCounty.call(this, i);
-	if (county) actorInput.county = county;
-
-	const postalCode = inputFunctions.getPostalCode.call(this, i);
-	if (postalCode) actorInput.postalCode = postalCode;
-
-	const customGeolocation = inputFunctions.getCustomGeolocation.call(this, i);
-	if (customGeolocation) actorInput.customGeolocation = customGeolocation;
-
-	const startUrls = inputFunctions.getStartUrls.call(this, i);
-	if (startUrls) actorInput.startUrls = startUrls;
-
-	const placeIds = inputFunctions.getPlaceIds.call(this, i);
-	if (placeIds) actorInput.placeIds = placeIds;
-
-	actorInput.allPlacesNoSearchAction = inputFunctions.getAllPlacesNoSearchAction.call(this, i);
+	const scrapingPlacesWithoutSearchTerms = inputFunctions.getScrapingPlacesWithoutSearchTermsSection.call(this, i);
+	if (scrapingPlacesWithoutSearchTerms) {
+		actorInput.allPlacesNoSearchAction = scrapingPlacesWithoutSearchTerms.allPlacesNoSearchAction;
+	}
 
 	return await executeActorRun.call(this, ACTOR_ID, actorInput);
 }

@@ -70,6 +70,29 @@ export function getSkipClosedPlaces(this: IExecuteFunctions, i: number): boolean
 }
 
 /**
+ * Get searchFiltersAndCategories section parameters
+ */
+export function getSearchFiltersAndCategoriesSection(this: IExecuteFunctions, i: number) : {
+	categoryFilterWords: string[],
+	searchMatching: string,
+	placeMinimumStars: string,
+	website: string,
+	skipClosedPlaces: boolean,
+} | null {
+	const searchFiltersAndCategories = this.getNodeParameter('searchFiltersAndCategories', i) as any;
+        if (searchFiltersAndCategories && typeof searchFiltersAndCategories === 'object' && 'options' in searchFiltersAndCategories && searchFiltersAndCategories.options) {
+        	return {
+               	categoryFilterWords: searchFiltersAndCategories.options.categoryFilterWords,
+				searchMatching: searchFiltersAndCategories.options.searchMatching,
+				placeMinimumStars: searchFiltersAndCategories.options.placeMinimumStars,
+				website: searchFiltersAndCategories.options.website,
+				skipClosedPlaces: searchFiltersAndCategories.options.skipClosedPlaces,
+            };
+        }
+    return null;
+}
+
+/**
  * Get scrapePlaceDetailPage parameter
  */
 export function getScrapePlaceDetailPage(this: IExecuteFunctions, i: number): boolean {
@@ -105,6 +128,29 @@ export function getMaxQuestions(this: IExecuteFunctions, i: number): number {
 }
 
 /**
+ * Get additionalPlaceDetailsScraping section parameters
+ */
+export function getAdditionalPlaceDetailsScrapingSection(this: IExecuteFunctions, i: number) : {
+	scrapePlaceDetailPage: boolean,
+	scrapeTableReservationProvider: boolean,
+	includeWebResults: boolean,
+	scrapeDirectories: boolean,
+	maxQuestions: number,
+} | null {
+	const additionalPlaceDetailsScraping = this.getNodeParameter('additionalPlaceDetailsScraping', i) as any;
+        if (additionalPlaceDetailsScraping && typeof additionalPlaceDetailsScraping === 'object' && 'options' in additionalPlaceDetailsScraping && additionalPlaceDetailsScraping.options) {
+        	return {
+               	scrapePlaceDetailPage: additionalPlaceDetailsScraping.options.scrapePlaceDetailPage,
+				scrapeTableReservationProvider: additionalPlaceDetailsScraping.options.scrapeTableReservationProvider,
+				includeWebResults: additionalPlaceDetailsScraping.options.includeWebResults,
+				scrapeDirectories: additionalPlaceDetailsScraping.options.scrapeDirectories,
+				maxQuestions: additionalPlaceDetailsScraping.options.maxQuestions,
+            };
+        }
+    return null;
+}
+
+/**
  * Get scrapeContacts parameter
  */
 export function getScrapeContacts(this: IExecuteFunctions, i: number): boolean {
@@ -134,6 +180,39 @@ export function getScrapeSocialMediaProfiles(this: IExecuteFunctions, i: number)
 }
 
 /**
+ * Get additionalPlaceDetailsScraping section parameters
+ */
+export function getCompanyContactsEnrichmentSection(this: IExecuteFunctions, i: number) : {
+	scrapeContacts: boolean,
+	scrapeSocialMediaProfiles: {
+		instagrams: boolean,
+	} | null,
+} | null {
+	const companyContactsEnrichment = this.getNodeParameter('companyContactsEnrichment', i) as any;
+   if (companyContactsEnrichment && typeof companyContactsEnrichment === 'object' && 'options' in companyContactsEnrichment && companyContactsEnrichment.options) {
+		const defaultScrapeSocialMediaProfilesOptions = {
+			facebooks: false,
+			instagrams: false,
+			youtubes: false,
+			tiktoks: false,
+			twitters: false,
+		};
+
+		const result = {
+			scrapeContacts: companyContactsEnrichment.options.scrapeContacts,	
+			scrapeSocialMediaProfiles: defaultScrapeSocialMediaProfilesOptions,
+		}
+
+		if (companyContactsEnrichment.options.scrapeSocialMediaProfiles && typeof companyContactsEnrichment.options.scrapeSocialMediaProfiles === 'object' && 'options' in companyContactsEnrichment.options.scrapeSocialMediaProfiles && companyContactsEnrichment.options.scrapeSocialMediaProfiles.options) {
+			result.scrapeSocialMediaProfiles = companyContactsEnrichment.options.scrapeSocialMediaProfiles.options;
+		}
+
+		return result;
+    }
+    return null;
+}
+
+/**
  * Get maximumLeadsEnrichmentRecords parameter
  */
 export function getMaximumLeadsEnrichmentRecords(this: IExecuteFunctions, i: number): number {
@@ -145,6 +224,23 @@ export function getMaximumLeadsEnrichmentRecords(this: IExecuteFunctions, i: num
  */
 export function getLeadsEnrichmentDepartments(this: IExecuteFunctions, i: number): string[] {
 	return this.getNodeParameter('leadsEnrichmentDepartments', i) as string[];
+}
+
+/**
+ * Get businessLeadsEnrichment section parameters
+ */
+export function getBusinessLeadsEnrichmentSection(this: IExecuteFunctions, i: number) : {
+	maximumLeadsEnrichmentRecords: number,
+	leadsEnrichmentDepartments: string[],
+} | null {
+	const businessLeadsEnrichment = this.getNodeParameter('businessLeadsEnrichment', i) as any;
+        if (businessLeadsEnrichment && typeof businessLeadsEnrichment === 'object' && 'options' in businessLeadsEnrichment && businessLeadsEnrichment.options) {
+        	return {
+               	maximumLeadsEnrichmentRecords: businessLeadsEnrichment.options.maximumLeadsEnrichmentRecords,
+				leadsEnrichmentDepartments: businessLeadsEnrichment.options.leadsEnrichmentDepartments,
+            };
+        }
+    return null;
 }
 
 /**
@@ -192,6 +288,31 @@ export function getScrapeReviewsPersonalData(this: IExecuteFunctions, i: number)
 }
 
 /**
+ * Get reviews section parameters
+ */
+export function getReviewsSection(this: IExecuteFunctions, i: number) : {
+	maxReviews: number,
+	reviewsStartDate: string,
+	reviewsSort: string,
+	reviewsFilterString: string,
+	reviewsOrigin: string,
+	scrapeReviewsPersonalData: boolean,
+} | null {
+	const reviews = this.getNodeParameter('reviews', i) as any;
+        if (reviews && typeof reviews === 'object' && 'options' in reviews && reviews.options) {
+        	return {
+               	maxReviews: reviews.options.maxReviews,
+				reviewsStartDate: reviews.options.reviewsStartDate,
+				reviewsSort: reviews.options.reviewsSort,
+				reviewsFilterString: reviews.options.reviewsFilterString,
+				reviewsOrigin: reviews.options.reviewsOrigin,
+				scrapeReviewsPersonalData: reviews.options.scrapeReviewsPersonalData,
+            };
+        }
+    return null;
+}
+
+/**
  * Get maxImages parameter
  */
 export function getMaxImages(this: IExecuteFunctions, i: number): number {
@@ -203,6 +324,23 @@ export function getMaxImages(this: IExecuteFunctions, i: number): number {
  */
 export function getScrapeImageAuthors(this: IExecuteFunctions, i: number): boolean {
 	return this.getNodeParameter('scrapeImageAuthors', i) as boolean;
+}
+
+/**
+ * Get reviews section parameters
+ */
+export function getImagesSection(this: IExecuteFunctions, i: number) : {
+	maxImages: number,
+	scrapeImageAuthors: boolean,
+} | null  {
+	const images = this.getNodeParameter('images', i) as any;
+        if (images && typeof images === 'object' && 'options' in images && images.options) {
+        	return {
+               	maxImages: images.options.maxImages,
+				scrapeImageAuthors: images.options.scrapeImageAuthors,
+            };
+        }
+    return null;
 }
 
 /**
@@ -267,6 +405,55 @@ export function getCustomGeolocation(this: IExecuteFunctions, i: number): object
 }
 
 /**
+ * Get advanced geolocation section parameters
+ */
+export function getAdvancedGeolocationSection(this: IExecuteFunctions, i: number) : {
+	countryCode: string,
+	city: string | undefined,
+	state: string | undefined,
+	county: string | undefined,
+	postalCode: string | undefined,
+	customGeolocation: object | undefined,
+} | null  {
+	const advancedGeolocation = this.getNodeParameter('advancedGeolocation', i) as any;
+        if (advancedGeolocation && typeof advancedGeolocation === 'object' && 'options' in advancedGeolocation && advancedGeolocation.options) {
+        	const options: {
+				countryCode: string,
+				city: string | undefined,
+				state: string | undefined,
+				county: string | undefined,
+				postalCode: string | undefined,
+				customGeolocation: object | undefined,
+			} = {
+               	countryCode: advancedGeolocation.options.countryCode,
+				city: advancedGeolocation.options.city !== undefined && advancedGeolocation.options.city !== null && advancedGeolocation.options.city !== '' ? advancedGeolocation.options.city : undefined,
+				state: advancedGeolocation.options.state !== undefined && advancedGeolocation.options.state !== null && advancedGeolocation.options.state !== '' ? advancedGeolocation.options.state : undefined,
+				county: advancedGeolocation.options.county !== undefined && advancedGeolocation.options.county !== null && advancedGeolocation.options.county !== '' ? advancedGeolocation.options.county : undefined,
+				postalCode: advancedGeolocation.options.postalCode !== undefined && advancedGeolocation.options.postalCode !== null && advancedGeolocation.options.postalCode !== '' ? advancedGeolocation.options.postalCode : undefined,
+				customGeolocation: undefined,
+			}
+
+			try {
+				const rawValue = advancedGeolocation.options.customGeolocation;
+				if (typeof rawValue === 'string' && rawValue.trim() === '') {
+					options.customGeolocation = undefined;
+				} else if (typeof rawValue === 'string') {
+					options.customGeolocation = JSON.parse(rawValue) as object;
+				} else if (rawValue && typeof rawValue === 'object') {
+					options.customGeolocation = rawValue as object;
+				} else {
+					options.customGeolocation = undefined;
+				}
+			} catch (error) {
+				throw new Error(`Invalid JSON in customGeolocation: ${error instanceof Error ? error.message : 'Unknown error'}`);
+			}
+
+			return options;
+        }
+    return null;
+}
+
+/**
  * Get startUrls parameter (list)
  * Transforms the fixedCollection format to an array format expected by Apify
  */
@@ -291,10 +478,62 @@ export function getPlaceIds(this: IExecuteFunctions, i: number): string[] | unde
 }
 
 /**
+ * Get alternativeSources section parameters
+ */
+export function getAlternativeSourcesSection(this: IExecuteFunctions, i: number) : {
+	startUrls: string[] | undefined,
+	placeIds: string[] | undefined,
+} | null {
+	const alternativeSources = this.getNodeParameter('alternativeSources', i) as any;
+        if (alternativeSources && typeof alternativeSources === 'object' && 'options' in alternativeSources && alternativeSources.options) {
+			const options: {
+				startUrls: string[] | undefined,
+				placeIds: string[] | undefined,
+			} = {
+				startUrls: undefined,
+				placeIds: undefined,
+			};
+
+			const startUrls = alternativeSources.options.startUrls as {
+				items?: { value: string }[];
+			};
+			const mappedStartUrls = startUrls.items?.map(item => item.value) || [];
+			if(mappedStartUrls.length > 0) {
+				options.startUrls = mappedStartUrls;
+			}
+
+			const placeIds = alternativeSources.options.placeIds as {
+				values?: { value: string }[];
+			};
+			const mappedPlaceIds = placeIds.values?.map(item => item.value) || [];
+			if(mappedPlaceIds.length > 0) {
+				options.placeIds = mappedPlaceIds;
+			}
+			return options;
+		}
+    return null;
+}
+
+/**
  * Get allPlacesNoSearchAction parameter
  */
 export function getAllPlacesNoSearchAction(this: IExecuteFunctions, i: number): string {
 	return this.getNodeParameter('allPlacesNoSearchAction', i) as string;
+}
+
+/**
+ * Get reviews section parameters
+ */
+export function getScrapingPlacesWithoutSearchTermsSection(this: IExecuteFunctions, i: number) : {
+	allPlacesNoSearchAction: string,
+} | null  {
+	const scrapingPlacesWithoutSearchTerms = this.getNodeParameter('scrapingPlacesWithoutSearchTerms', i) as any;
+        if (scrapingPlacesWithoutSearchTerms && typeof scrapingPlacesWithoutSearchTerms === 'object' && 'options' in scrapingPlacesWithoutSearchTerms && scrapingPlacesWithoutSearchTerms.options) {
+        	return {
+               	allPlacesNoSearchAction: scrapingPlacesWithoutSearchTerms.options.allPlacesNoSearchAction,
+            };
+        }
+    return null;
 }
 
 /**

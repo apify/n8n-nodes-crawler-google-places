@@ -1,3 +1,6 @@
+/* eslint-disable n8n-nodes-base/node-param-description-excess-final-period */
+/* eslint-disable n8n-nodes-base/node-param-description-boolean-without-whether */
+/* eslint-disable n8n-nodes-base/node-param-display-name-miscased */
 import { INodeProperties } from 'n8n-workflow';
 
 /**
@@ -73,7 +76,7 @@ const maxCrawledPlacesPerSearchProperty: INodeProperties = {
   "name": "maxCrawledPlacesPerSearch",
   "description": "Number of results you expect to get per each Search term, Category or URL. The higher the number, the longer it will take. <br><br>If you want to scrape all the places available, <b>leave this field empty</b> or use this section <b>\ud83e\udded Scrape all places on the map*</b>.",
   "required": false,
-  "default": 0,
+  "default": 50,
   "type": "number",
   "typeOptions": {
     "minValue": 1
@@ -16685,6 +16688,34 @@ export function getSkipClosedPlacesProperty(resourceName: string, operationName:
 	return addDisplayOptions(skipClosedPlacesProperty, resourceName, operationName);
 }
 
+const searchFiltersAndCategoriesSectionProperty: INodeProperties = {
+  displayName: "🔍 Add-on: Search filters & categories",
+  name: "searchFiltersAndCategories",
+  type: 'fixedCollection',
+  description: "You can limit the places that are scraped based on these filters; you can choose as many filters and they are charged <b>$0.001</b> per result per filter field used. See detailed prices <a href='https://help.apify.com/en/articles/10774732-google-maps-scraper-is-going-to-pay-per-event-pricing#h_1162e52688'>here</a>.<br><br><b>In the Categories field below, you are charged only once regardless of how many of the 4000 available categories are used, and we encourage you to use as many categories as you want to increase the number of relevant results (for example, Hotels, Seaside Hotels etc). <br> <br><b>Using categories can sometimes lead to false negatives, as many places do not properly categorize themselves. See the [detailed description](https://apify.com/compass/crawler-google-places#categories).",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        categoryFilterWordsProperty,
+        searchMatchingProperty,
+        placeMinimumStarsProperty,
+        websiteProperty,
+        skipClosedPlacesProperty,
+      ]
+    },
+  ]
+};
+
+export function getSearchFiltersAndCategoriesSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(searchFiltersAndCategoriesSectionProperty, resourceName, operationName);
+}
+
 const scrapePlaceDetailPageProperty: INodeProperties = {
   "displayName": "Scrape place detail page ($)",
   "name": "scrapePlaceDetailPage",
@@ -16761,6 +16792,34 @@ const maxQuestionsProperty: INodeProperties = {
   }
 };
 
+const additionalPlaceDetailsScrapingSectionProperty: INodeProperties = {
+  displayName: "📌 Add-on: Additional place details scraping",
+  name: "additionalPlaceDetailsScraping",
+  type: 'fixedCollection',
+  description: "Extract additional details about each place beyond the basics for <b>$0.002 per result</b>. See detailed prices <a href='https://help.apify.com/en/articles/10774732-google-maps-scraper-is-going-to-pay-per-event-pricing#h_52c862c188'>here</a>. There’s one flat fee for adding the additional details, regardless of how many toggles are used or the number of questions extracted. This event is automatically applied when scraping reviews or images.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        scrapePlaceDetailPageProperty,
+        scrapeTableReservationProviderProperty,
+        includeWebResultsProperty,
+        scrapeDirectoriesProperty,
+        maxQuestionsProperty,
+      ]
+    },
+  ]
+};
+
+export function getAdditionalPlaceDetailsScrapingSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(additionalPlaceDetailsScrapingSectionProperty, resourceName, operationName);
+}
+
 /**
  * Get maxQuestions property with displayOptions for the specified resource and operation
  */
@@ -16785,12 +16844,58 @@ export function getScrapeContactsProperty(resourceName: string, operationName: s
 }
 
 const scrapeSocialMediaProfilesProperty: INodeProperties = {
-  "displayName": "\ud83d\udd0d Add-on: Social media profile enrichment",
-  "name": "scrapeSocialMediaProfiles",
-  "description": "Enable enrichment for any social media profiles found. This add-on retrieves detailed public data for each profile, including <b>profile names, follower/following counts, descriptions, post/video counts, and verification status</b>.<br><br>Pricing depends on your <b>subscription plan</b> (please see the 'Pricing' tab for details). You are charged a flat rate for the <b>total number of profiles enriched</b>, regardless of how many platforms (Facebook, YouTube, etc.) you select.<hr><b>Feature Dependency:</b><br>To use this feature, the <b>'\u23e9 Add-on: Company contacts enrichment (from website)'</b> option will be automatically enabled. This ensures that all enriched social media data is correctly combined with the main contact record for each domain.",
-  "required": false,
-  "default": "{\"facebooks\":false,\"instagrams\":false,\"youtubes\":false,\"tiktoks\":false,\"twitters\":false}",
-  "type": "json"
+	displayName: '🔍 Add-on: Social media profile enrichment ($)',
+	name: 'scrapeSocialMediaProfiles',
+	type: 'fixedCollection',
+  description: "Enable enrichment for any social media profiles found. This add-on retrieves detailed public data for each profile, including <b>profile names, follower/following counts, descriptions, post/video counts, and verification status</b>.<br><br>Pricing depends on your <b>subscription plan</b> (please see the 'Pricing' tab for details). You are charged a flat rate for the <b>total number of profiles enriched</b>, regardless of how many platforms (Facebook, YouTube, etc.) you select.<hr><b>Feature Dependency:</b><br>To use this feature, the <b>'⏩ Add-on: Company contacts enrichment (from website)'</b> option will be automatically enabled. This ensures that all enriched social media data is correctly combined with the main contact record for each domain.",
+	default: {},
+	typeOptions: {
+		multipleValues: false,
+	},
+	options: [
+		{
+			displayName: 'Options',
+			name: 'options',
+			// eslint-disable-next-line n8n-nodes-base/node-param-fixed-collection-type-unsorted-items
+			values: [
+				{
+					displayName:  "Enable Facebook profile scraping",
+					name: 'facebooks',
+          description: "Enable scraping detailed Facebook profile information for discovered Facebook URLs. This will provide additional data like follower counts, profile pictures, and more.",
+					type: 'boolean',
+					default: false,
+				},
+        {
+					displayName:  "Enable Instagram profile scraping",
+					name: 'instagrams',
+          description: "Enable scraping detailed Instagram profile information for discovered Instagram URLs. This will provide additional data like follower counts, profile pictures, and more.",
+					type: 'boolean',
+					default: false,
+				},
+        {
+					displayName:  "Enable YouTube channel scraping",
+					name: 'youtubes',
+          description: "Enable scraping detailed YouTube channel information for discovered YouTube URLs. This will provide additional data like subscriber counts, channel descriptions, and more.",
+					type: 'boolean',
+					default: false,
+				},
+        {
+					displayName:  "Enable TikTok profile scraping",
+    			name: 'tiktoks',
+          description: "Enable scraping detailed TikTok profile information for discovered TikTok URLs. This will provide additional data like follower counts, profile pictures, and more.",
+					type: 'boolean',
+					default: false,
+				},
+        {
+					displayName:  "Enable X (Twitter) profile scraping",
+					name: 'twitters',
+          description: "Enable scraping detailed Twitter profile information for discovered X (Twitter) URLs. This will provide additional data like follower counts, profile pictures, and more.",
+					type: 'boolean',
+					default: false,
+				},
+			],
+		},
+	],
 };
 
 /**
@@ -16798,6 +16903,31 @@ const scrapeSocialMediaProfilesProperty: INodeProperties = {
  */
 export function getScrapeSocialMediaProfilesProperty(resourceName: string, operationName: string): INodeProperties {
 	return addDisplayOptions(scrapeSocialMediaProfilesProperty, resourceName, operationName);
+}
+
+const companyContactsEnrichmentSectionProperty: INodeProperties = {
+  displayName: "🏢 Add-on: Company contacts enrichment",
+  name: "companyContactsEnrichment",
+  type: 'fixedCollection',
+  description: "In this section, you can enrich your output with <b>comprehensive contact info</b> and <b>social media profile metrics</b>.<br><br><b>Available features:</b><ul><li><b>Company contacts enrichment:</b> Scrapes the business website to find <b>emails, phone numbers, and social media links</b>.<br><br></li><li><b>Social media profile enrichment:</b> Scrapes the discovered profiles to get detailed data like <b>follower counts, descriptions, and verification status</b> (supports Facebook, Instagram, YouTube, TikTok, X (Twitter)).</li></ul><hr><b>Pricing notice:</b><br>An additional fee applies per result when these features are active. Please see the <b>Pricing tab</b> for details.<ul><li><b>Contact enrichment:</b> Starts at <b>$2.00 per 1,000 places</b> ($0.002/place). Extra cost per place for finding the associated web page and extracting contact information (e.g. social media accounts or company email).</li><li><b>Social profile enrichment:</b> Starts at <b>$8.00 per 1,000 profiles</b> ($0.008/profile). You are charged a flat rate for the <b>total number of profiles enriched</b>, regardless of how many platforms you select.</li></ul><b>Tip:</b> Make sure to toggle <i>“scrape only places with a website”</i> in the <i>“Add-on: Search filters & categories”</i> section to optimize your cost.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        scrapeContactsProperty,
+        scrapeSocialMediaProfilesProperty,
+      ]
+    },
+  ]
+};
+
+export function getCompanyContactsEnrichmentSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(companyContactsEnrichmentSectionProperty, resourceName, operationName);
 }
 
 const maximumLeadsEnrichmentRecordsProperty: INodeProperties = {
@@ -16889,6 +17019,31 @@ const leadsEnrichmentDepartmentsProperty: INodeProperties = {
  */
 export function getLeadsEnrichmentDepartmentsProperty(resourceName: string, operationName: string): INodeProperties {
 	return addDisplayOptions(leadsEnrichmentDepartmentsProperty, resourceName, operationName);
+}
+
+const businessLeadsEnrichmentSectionProperty: INodeProperties = {
+  displayName: "👥 Add-on: Business leads enrichment",
+  name: "businessLeadsEnrichment",
+  type: 'fixedCollection',
+  description: "In this section, you can enrich your output with detailed leads information for employees working at the business (place found), including their <b>full name, work email address, phone number, job title, and LinkedIn profile</b>. You will also get company data such as industry, number of employees, and more. The leads enrichment works only when the place has an associated website.<br><br><b>The price for each successfully enriched lead starts at $0.005</b>.<br><br><b>This feature is available only for paying users</b>. Please subscribe to a paid plan to use it.<br><br><blockquote>⚠️ <b>Important: How costs are calculated</b><br>The number of leads you request is <b>per place found</b>. Setting this to a high number can significantly increase your costs.<br><br><b>Example:</b> Requesting <b>10 leads</b> for a search that finds <b>1,000 places</b> will result in an attempt to find <b>10,000 leads</b>. You will only be charged for leads that are <b>successfully found</b>.</blockquote>",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        maximumLeadsEnrichmentRecordsProperty,
+        leadsEnrichmentDepartmentsProperty,
+      ]
+    },
+  ]
+};
+
+export function getBusinessLeadsEnrichmentSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(businessLeadsEnrichmentSectionProperty, resourceName, operationName);
 }
 
 const maxReviewsProperty: INodeProperties = {
@@ -17021,6 +17176,36 @@ export function getScrapeReviewsPersonalDataProperty(resourceName: string, opera
 	return addDisplayOptions(scrapeReviewsPersonalDataProperty, resourceName, operationName);
 }
 
+
+const reviewsSectionProperty: INodeProperties = {
+  displayName: "⭐️ Add-on: Reviews",
+  name: "reviews",
+  type: 'fixedCollection',
+  description: "If you want to extract reviews in your results for <b>$0.0005 per review plus $0.002 per place</b>, fill in the input fields below. See detailed prices <a href='https://help.apify.com/en/articles/10774732-google-maps-scraper-is-going-to-pay-per-event-pricing#h_986e88f1b8'>here</a>.<BR><BR>Please note that there is <b>an additional charge of 0.002 per place</b> when scraping reviews, since the Scraper triggers the Extra place details scraped event for each place. <BR><BR>Note that some of the fields contain **personal data**. GDPR protects personal data in the European Union and by other regulations around the world. You should not scrape personal data unless you have a legitimate reason to do so. If you're unsure whether your use case is legitimate, please consult an attorney.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        maxReviewsProperty,
+        reviewsStartDateProperty,
+        reviewsSortProperty,
+        reviewsFilterStringProperty,
+        reviewsOriginProperty,
+        scrapeReviewsPersonalDataProperty,
+      ]
+    },
+  ]
+};
+
+export function getReviewsSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(reviewsSectionProperty, resourceName, operationName);
+}
+
 const maxImagesProperty: INodeProperties = {
   "displayName": "Number of additional images to extract ($)",
   "name": "maxImages",
@@ -17054,6 +17239,32 @@ const scrapeImageAuthorsProperty: INodeProperties = {
  */
 export function getScrapeImageAuthorsProperty(resourceName: string, operationName: string): INodeProperties {
 	return addDisplayOptions(scrapeImageAuthorsProperty, resourceName, operationName);
+}
+
+const imagesSectionProperty: INodeProperties = {
+  // eslint-disable-next-line n8n-nodes-base/node-param-display-name-excess-inner-whitespace
+  displayName: "🖼️ Add-on:  Images",
+  name: "images",
+  type: 'fixedCollection',
+  description: "Choose if you want to extract <strong>additional</strong> images for <b>$0.0005 per image</b>.<BR><BR><b>The main image is already included by default and free of charge.</b><BR><BR>Please note that there is <b>an additional charge of $0.002 per place</b> when scraping images, since the Scraper triggers the Extra place details scraped event for each place.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        maxImagesProperty,
+        scrapeImageAuthorsProperty,
+      ]
+    },
+  ]
+};
+
+export function getImagesSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(imagesSectionProperty, resourceName, operationName);
 }
 
 const countryCodeProperty: INodeProperties = {
@@ -18107,7 +18318,7 @@ const customGeolocationProperty: INodeProperties = {
   "name": "customGeolocation",
   "description": "Use this field to define the exact search area if other search area parameters don't work for you. See <a href='https://apify.com/compass/crawler-google-places#custom-search-area' target='_blank' rel='noopener'>readme</a> or <a href='https://blog.apify.com/google-places-api-limits/#1-create-a-custom-area-by-using-pairs-of-coordinates-%F0%9F%93%A1' target='_blank' rel='noopener'>our guide</a> for details.",
   "required": false,
-  "default": "",
+  "default": "{}",
   "type": "json"
 };
 
@@ -18116,6 +18327,35 @@ const customGeolocationProperty: INodeProperties = {
  */
 export function getCustomGeolocationProperty(resourceName: string, operationName: string): INodeProperties {
 	return addDisplayOptions(customGeolocationProperty, resourceName, operationName);
+}
+
+const advancedGeolocationSectionProperty: INodeProperties = {
+  displayName: "📡 Define the search area by other geolocation parameters",
+  name: "advancedGeolocation",
+  type: 'fixedCollection',
+  description: "If free text 📍<b>Location</b> doesn't yield desired area, you can try combination of specific location types or custom geolocation (polygon or circle). Just make sure to clear the 📍<b>Location</b> field first, as it always has priority.<br><br>You can customize your area by:<br>1. using combinations of specific 🗺 <b>location types</b> (Country, City, State, County, and Postal code). You can always check with the <b>Structured</b> tab of <a href='https://nominatim.openstreetmap.org/ui/search.html' target='_blank' rel='noopener'>OpenStreetMap webapp</a> for validation of location types you want to cover.<br>2. defining a <b>🛰 Custom search area</b> with pairs of coordinates (shaped like polygon or circle). Tutorial <a href='https://blog.apify.com/google-places-api-limits/#1-create-a-custom-area-by-using-pairs-of-coordinates-📡' target='_blank' rel='noopener'>here</a>.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        countryCodeProperty,
+        cityProperty,
+        stateProperty,
+        countyProperty,
+        postalCodeProperty,
+        customGeolocationProperty,
+      ]
+    },
+  ]
+};
+
+export function getAdvancedGeolocationSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(advancedGeolocationSectionProperty, resourceName, operationName);
 }
 
 const startUrlsProperty: INodeProperties = {
@@ -18184,6 +18424,31 @@ export function getPlaceIdsProperty(resourceName: string, operationName: string)
 	return addDisplayOptions(placeIdsProperty, resourceName, operationName);
 }
 
+const alternativeSourcesSectionProperty: INodeProperties = {
+  displayName: "🔗 Scrape with Google Maps URLs or place IDs*",
+  name: "alternativeSources",
+  type: 'fixedCollection',
+  description: "Use this section to copy URLs directly from Google Maps and paste them here. Valid format for URLs contains <code>google.com/maps/</code>. Each URL can get you maximum 300 results. To overcome this limit, use 📡 <b>Geolocation parameters*</b> above ↑. <br><br>In addition to URLs, you can also provide place IDs. <b>Place ID</b> has format `ChIJreV9aqYWdkgROM_boL6YbwA`.<br><br>Please note that the Actor charges the `Add-on: additional place details scraped` event for each place ID or URL that points to a specific place on Google Maps. The event price depends on your subscription plan<br><br>⚠️ Don't combine this section with the the 🔍 <b>Search term</b> as the 🔗 <b>URLs</b> always have priority.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        startUrlsProperty,
+        placeIdsProperty,
+      ]
+    },
+  ]
+};
+
+export function getAlternativeSourcesSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(alternativeSourcesSectionProperty, resourceName, operationName);
+}
+
 const allPlacesNoSearchActionProperty: INodeProperties = {
   "displayName": "Scrape all places",
   "name": "allPlacesNoSearchAction",
@@ -18212,6 +18477,30 @@ const allPlacesNoSearchActionProperty: INodeProperties = {
  */
 export function getAllPlacesNoSearchActionProperty(resourceName: string, operationName: string): INodeProperties {
 	return addDisplayOptions(allPlacesNoSearchActionProperty, resourceName, operationName);
+}
+
+const scrapingPlacesWithoutSearchTermsSectionProperty: INodeProperties = {
+  displayName: "🧭 Scraping places without search terms or URLs*",
+  name: "scrapingPlacesWithoutSearchTerms",
+  type: 'fixedCollection',
+  description: "Will scrape all places visible on the map. If you want to override the default zoom (based on area size), you need to use `zoom` (a number from 1 to 21) in JSON input. Higher zoom will scrape more places but will take longer to finish. You can test what place pins are visible with a specific zoom by changing the <a href=\"https://www.google.com/maps/@40.745204,-73.9390184,16z\">16z</a> part of the Google Maps URL.",
+  default: {},
+  typeOptions: {
+		multipleValues: false,
+	},
+  options: [
+    {
+			displayName: 'Options',
+			name: 'options',
+			values: [
+        allPlacesNoSearchActionProperty
+      ]
+    },
+  ]
+};
+
+export function getScrapingPlacesWithoutSearchTermsSectionProperty(resourceName: string, operationName: string): INodeProperties {
+  return addDisplayOptions(scrapingPlacesWithoutSearchTermsSectionProperty, resourceName, operationName);
 }
 
 
