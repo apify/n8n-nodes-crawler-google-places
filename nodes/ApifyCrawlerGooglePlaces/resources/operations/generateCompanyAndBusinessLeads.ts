@@ -9,7 +9,6 @@ import {
 	getLanguageProperty,
 	getSearchFiltersAndCategoriesSectionProperty,
 	getAlternativeSourcesSectionProperty,
-	getScrapingPlacesWithoutSearchTermsSectionProperty,
 	getCompanyContactsEnrichmentSectionProperty,
 	getAdditionalPlaceDetailsScrapingSectionProperty,
 	getBusinessLeadsEnrichmentSectionProperty,
@@ -36,7 +35,6 @@ export function getProperties(resourceName: string): INodeProperties[] {
 		getCompanyContactsEnrichmentSectionProperty(resourceName, OPERATION_GENERATE_COMPANY_AND_BUSINESS_LEADS_NAME),
 		getBusinessLeadsEnrichmentSectionProperty(resourceName, OPERATION_GENERATE_COMPANY_AND_BUSINESS_LEADS_NAME),
 		getAlternativeSourcesSectionProperty(resourceName, OPERATION_GENERATE_COMPANY_AND_BUSINESS_LEADS_NAME),
-		getScrapingPlacesWithoutSearchTermsSectionProperty(resourceName, OPERATION_GENERATE_COMPANY_AND_BUSINESS_LEADS_NAME),
 	];
 }
 
@@ -93,9 +91,5 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 		}
 	}
 
-	const scrapingPlacesWithoutSearchTerms = inputFunctions.getScrapingPlacesWithoutSearchTermsSection.call(this, i);
-	if (scrapingPlacesWithoutSearchTerms) {
-		actorInput.allPlacesNoSearchAction = scrapingPlacesWithoutSearchTerms.allPlacesNoSearchAction;
-	}
 	return await executeActorRun.call(this, ACTOR_ID, actorInput);
 }

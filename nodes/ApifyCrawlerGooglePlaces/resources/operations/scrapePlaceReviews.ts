@@ -10,7 +10,6 @@ import {
 	getSearchFiltersAndCategoriesSectionProperty,
 	getAdditionalPlaceDetailsScrapingSectionProperty,
 	getAlternativeSourcesSectionProperty,
-	getScrapingPlacesWithoutSearchTermsSectionProperty,
 	getReviewsSectionProperty,
 } from '../../helpers/propertyFunctions';
 
@@ -34,7 +33,6 @@ export function getProperties(resourceName: string): INodeProperties[] {
 		getAdditionalPlaceDetailsScrapingSectionProperty(resourceName, OPERATION_SCRAPE_PLACE_REVIEWS_NAME),
 		getReviewsSectionProperty(resourceName, OPERATION_SCRAPE_PLACE_REVIEWS_NAME),
 		getAlternativeSourcesSectionProperty(resourceName, OPERATION_SCRAPE_PLACE_REVIEWS_NAME),
-		getScrapingPlacesWithoutSearchTermsSectionProperty(resourceName, OPERATION_SCRAPE_PLACE_REVIEWS_NAME),
 	];
 }
 
@@ -88,11 +86,6 @@ export async function execute(this: IExecuteFunctions, i: number): Promise<INode
 		if (alternativeSources.placeIds) {
 			actorInput.placeIds = alternativeSources.placeIds;
 		}
-	}
-	
-	const scrapingPlacesWithoutSearchTerms = inputFunctions.getScrapingPlacesWithoutSearchTermsSection.call(this, i);
-	if (scrapingPlacesWithoutSearchTerms) {
-		actorInput.allPlacesNoSearchAction = scrapingPlacesWithoutSearchTerms.allPlacesNoSearchAction;
 	}
 
 	return await executeActorRun.call(this, ACTOR_ID, actorInput);
