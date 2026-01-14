@@ -1,0 +1,145 @@
+import { IExecuteFunctions, INodeExecutionData, INodeProperties, INodePropertyOptions } from 'n8n-workflow';
+import { executeActorRun } from '../../helpers/genericFunctions';
+import { ACTOR_ID } from '../../ApifyCrawlerGooglePlaces.node';
+import * as inputFunctions from '../../helpers/inputFunctions';
+import {
+	getSearchStringsArrayProperty,
+	getLocationQueryProperty,
+	getMaxCrawledPlacesPerSearchProperty,
+	getLanguageProperty,
+	getSearchFiltersAndCategoriesSectionProperty,
+	getAdditionalPlaceDetailsScrapingSectionProperty,
+	getCompanyContactsEnrichmentSectionProperty,
+	getReviewsSectionProperty,
+	getBusinessLeadsEnrichmentSectionProperty,
+	getImagesSectionProperty,
+	getAdvancedGeolocationSectionProperty,
+	getAlternativeSourcesSectionProperty,
+	getScrapingPlacesWithoutSearchTermsSectionProperty,
+} from '../../helpers/propertyFunctions';
+
+export const OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME = 'Scrape places with advanced options';
+export const name = OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME;
+
+export const option: INodePropertyOptions = {
+	name: OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME,
+	value: OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME,
+	action: 'Scrape places with advanced options',
+	description: 'Scrape Google Maps results with all parameters available',
+};
+
+export function getProperties(resourceName: string): INodeProperties[] {
+	return [
+		getSearchStringsArrayProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getLocationQueryProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getMaxCrawledPlacesPerSearchProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getLanguageProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getSearchFiltersAndCategoriesSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getAdditionalPlaceDetailsScrapingSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getCompanyContactsEnrichmentSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getBusinessLeadsEnrichmentSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getReviewsSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getImagesSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getAdvancedGeolocationSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getAlternativeSourcesSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+		getScrapingPlacesWithoutSearchTermsSectionProperty(resourceName, OPERATION_SCRAPE_PLACES_WITH_ADVANCED_OPTIONS_NAME),
+	];
+}
+
+export async function execute(this: IExecuteFunctions, i: number): Promise<INodeExecutionData> {
+	const actorInput: Record<string, any> = {};
+
+	// Get all input parameters
+	const searchStringsArray = inputFunctions.getSearchStringsArray.call(this, i);
+	if (searchStringsArray) actorInput.searchStringsArray = searchStringsArray;
+
+	const locationQuery = inputFunctions.getLocationQuery.call(this, i);
+	if (locationQuery) actorInput.locationQuery = locationQuery;
+
+	actorInput.maxCrawledPlacesPerSearch = inputFunctions.getMaxCrawledPlacesPerSearch.call(this, i);
+	actorInput.language = inputFunctions.getLanguage.call(this, i);
+	
+	const searchFiltersAndCategories = inputFunctions.getSearchFiltersAndCategoriesSection.call(this, i);
+	if (searchFiltersAndCategories) {
+		actorInput.categoryFilterWords = searchFiltersAndCategories.categoryFilterWords;
+		actorInput.searchMatching = searchFiltersAndCategories.searchMatching;
+		actorInput.placeMinimumStars = searchFiltersAndCategories.placeMinimumStars;
+		actorInput.website = searchFiltersAndCategories.website;
+		actorInput.skipClosedPlaces = searchFiltersAndCategories.skipClosedPlaces;
+	}
+
+	const additionalPlaceDetailsScraping = inputFunctions.getAdditionalPlaceDetailsScrapingSection.call(this, i);
+	if (additionalPlaceDetailsScraping) {
+		actorInput.scrapePlaceDetailPage = additionalPlaceDetailsScraping.scrapePlaceDetailPage;
+		actorInput.scrapeTableReservationProvider = additionalPlaceDetailsScraping.scrapeTableReservationProvider;
+		actorInput.includeWebResults = additionalPlaceDetailsScraping.includeWebResults;
+		actorInput.scrapeDirectories = additionalPlaceDetailsScraping.scrapeDirectories;
+		actorInput.maxQuestions = additionalPlaceDetailsScraping.maxQuestions;
+	}
+
+	const companyContactsEnrichment = inputFunctions.getCompanyContactsEnrichmentSection.call(this, i);
+	if (companyContactsEnrichment) {
+		actorInput.scrapeContacts = companyContactsEnrichment.scrapeContacts;
+		actorInput.scrapeSocialMediaProfiles = companyContactsEnrichment.scrapeSocialMediaProfiles;
+	}
+
+	const businessLeadsEnrichment = inputFunctions.getBusinessLeadsEnrichmentSection.call(this, i);
+	if (businessLeadsEnrichment) {
+		actorInput.maximumLeadsEnrichmentRecords = businessLeadsEnrichment.maximumLeadsEnrichmentRecords;
+		actorInput.leadsEnrichmentDepartments = businessLeadsEnrichment.leadsEnrichmentDepartments;
+	}
+
+	const reviews = inputFunctions.getReviewsSection.call(this, i);
+	if (reviews) {
+		actorInput.maxReviews = reviews.maxReviews;
+		const reviewsStartDate = reviews.reviewsStartDate;
+		if (reviewsStartDate) actorInput.reviewsStartDate = reviewsStartDate;
+		actorInput.reviewsSort = reviews.reviewsSort;
+		actorInput.reviewsFilterString = reviews.reviewsFilterString;
+		actorInput.reviewsOrigin = reviews.reviewsOrigin;
+		actorInput.scrapeReviewsPersonalData = reviews.scrapeReviewsPersonalData;
+	}
+
+	const images = inputFunctions.getImagesSection.call(this, i);
+	if (images) {
+		actorInput.maxImages = images.maxImages;
+		actorInput.scrapeImageAuthors = images.scrapeImageAuthors;
+	}
+	
+	const advancedGeolocation = inputFunctions.getAdvancedGeolocationSection.call(this, i);
+	if (advancedGeolocation) {
+		actorInput.countryCode = advancedGeolocation.countryCode;
+		if (actorInput.city) {
+			actorInput.city = advancedGeolocation.city;
+		};
+		if (actorInput.state) {
+			actorInput.state = advancedGeolocation.state;
+		};
+		if (actorInput.county) {
+			actorInput.county = advancedGeolocation.county;
+		};
+		if (actorInput.postalCode) {
+			actorInput.postalCode = advancedGeolocation.postalCode;
+		};
+		if (actorInput.customGeolocation) {
+			actorInput.customGeolocation = advancedGeolocation.customGeolocation;
+		};
+	}
+
+	const alternativeSources = inputFunctions.getAlternativeSourcesSection.call(this, i);
+	if (alternativeSources) {
+		if (alternativeSources.startUrls) {
+			actorInput.startUrls = alternativeSources.startUrls;
+		}
+		if (alternativeSources.placeIds) {
+			actorInput.placeIds = alternativeSources.placeIds;
+		}
+	}
+
+	const scrapingPlacesWithoutSearchTerms = inputFunctions.getScrapingPlacesWithoutSearchTermsSection.call(this, i);
+	if (scrapingPlacesWithoutSearchTerms) {
+		actorInput.allPlacesNoSearchAction = scrapingPlacesWithoutSearchTerms.allPlacesNoSearchAction;
+	}
+
+	return await executeActorRun.call(this, ACTOR_ID, actorInput);
+}

@@ -5,8 +5,7 @@ import {
 	INodeTypeDescription,
 	NodeConnectionType,
 } from 'n8n-workflow';
-import { properties } from './ApifyCrawlerGooglePlaces.properties';
-import { runActor } from './helpers/executeActor';
+import { router, methods, properties } from './resources/router';
 
 // SNIPPET 1: Make sure the constants are correct
 export const ACTOR_ID = 'nwua9Gu5YrADL7ZDj' as string;
@@ -34,7 +33,7 @@ export class ApifyCrawlerGooglePlaces implements INodeType {
 		defaultVersion: 1,
 
 		// SNIPPET 3: Adjust the subtitle for your Actor app.
-		subtitle: 'Run Scraper',
+		subtitle: '={{$parameter["operation"]}}',
 		
 		// SNIPPET 4: Make sure the description is not too large, 1 sentence should be ideal.
 		description: DESCRIPTION,
@@ -70,13 +69,15 @@ export class ApifyCrawlerGooglePlaces implements INodeType {
 		properties,
 	};
 
+	methods = methods;
+
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: INodeExecutionData[] = [];
 
 		for (let i = 0; i < items.length; i++) {
 			try {
-				const data = await runActor.call(this, i);
+				const data = await router.call(this, i);
 
 				const addPairedItem = (item: INodeExecutionData) => ({
 					...item,
